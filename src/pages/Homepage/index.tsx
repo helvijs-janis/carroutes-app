@@ -25,6 +25,9 @@ import {
 
 const position = { lat: 53.54992, lng: 10.00678 };
 
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const MAPON_API_KEY = import.meta.env.VITE_MAPON_API_KEY;
+
 interface Unit {
   number: string;
   unit_id: number;
@@ -46,7 +49,7 @@ function Homepage() {
   useEffect(() => {
     const fetchList = async () => {
       const response = await fetch(
-        "https://mapon.com/api/v1/unit.json?key=93737a19206c2d71d26360187d64ac0fc6656621"
+        `https://mapon.com/api/v1/unit.json?key=${MAPON_API_KEY}`
       );
       const carList = await response.json();
 
@@ -68,7 +71,7 @@ function Homepage() {
     if (!selectedCar) return;
 
     const response = await fetch(
-      `https://mapon.com/api/v1/route/list.json?key=93737a19206c2d71d26360187d64ac0fc6656621&unit_id=${
+      `https://mapon.com/api/v1/route/list.json?key=${MAPON_API_KEY}&unit_id=${
         selectedCar.unit_id
       }&from=${convertToDatetime(startDate)}&till=${convertToDatetime(
         endDate
@@ -155,7 +158,7 @@ function Homepage() {
 
         {displayMap && (
           <Box position="relative" w="100%" h="200px">
-            <APIProvider apiKey="AIzaSyAORsb9b49Evy6v6lMA9-n3Az-i94qffWg">
+            <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
               <Map
                 defaultCenter={position}
                 defaultZoom={10}
